@@ -1,5 +1,5 @@
 <template>
-  <div class="border border-slate-300 rounded-md shadow hover:shadow-lg overflow-hidden duration-100 relative">
+  <div class="border border-slate-300 rounded-xl shadow hover:shadow-lg overflow-hidden duration-100 relative cursor-pointer">
     <div class="aspect-[5/3]">
       <img
         class="w-full h-full object-cover"

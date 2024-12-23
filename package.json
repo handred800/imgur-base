@@ -21,6 +21,7 @@
     "lightgallery": "^2.8.2",
     "lucide-vue-next": "^0.468.0",
     "nuxt": "^3.14.1592",
+    "photoswipe": "^5.4.4",
     "vue": "latest",
     "vue-router": "latest"
   }
