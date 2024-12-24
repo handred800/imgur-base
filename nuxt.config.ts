@@ -1,12 +1,25 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['@nuxtjs/tailwindcss', '@nuxt/eslint', '@vueuse/nuxt'],
+  modules: [
+    '@nuxtjs/tailwindcss',
+    '@nuxt/eslint',
+    '@vueuse/nuxt',
+    'nuxt-lucide-icons',
+  ],
   ssr: false,
   devtools: { enabled: true },
-  compatibilityDate: '2024-11-01',
+  app: {
+    pageTransition: {
+      name: 'fade',
+      mode: 'out-in',
+    },
+  },
   eslint: {
     config: {
       stylistic: true,
     },
+  },
+  lucide: {
+    namePrefix: 'Icon',
   },
 })

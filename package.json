@@ -19,8 +19,8 @@
     "daisyui": "^4.12.22",
     "eslint": "^9.16.0",
     "lightgallery": "^2.8.2",
-    "lucide-vue-next": "^0.468.0",
     "nuxt": "^3.14.1592",
+    "nuxt-lucide-icons": "^1.0.5",
     "photoswipe": "^5.4.4",
     "vue": "latest",
     "vue-router": "latest"

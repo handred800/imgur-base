@@ -1,11 +1,10 @@
 <template>
   <div class="border border-slate-300 rounded-xl shadow hover:shadow-lg overflow-hidden duration-100 relative">
-    <div class="aspect-[5/3]">
-      <img
-        class="w-full h-full object-cover"
+    <div class="aspect-[5/3] bg-slate-300">
+      <NuxtImg
+        class="w-full h-full object-cover duration-200"
         :src="props.img"
-        alt=""
-      >
+      />
     </div>
     <div class="absolute bottom-0 w-full p-2">
       <div class="join w-full">
@@ -22,7 +21,7 @@
           class="btn btn-sm join-item"
           @click="clickView"
         >
-          <Eye />
+          <IconEye />
         </button>
       </div>
     </div>
@@ -30,8 +29,6 @@
 </template>
 
 <script setup>
-import { Eye } from 'lucide-vue-next'
-
 const props = defineProps({
   img: String,
   name: String,

@@ -1,16 +1,18 @@
-import { getAlbum, createAlbum, deleteAlbum } from '../../http'
+import { uploadImage, deleteImage } from '../../http'
 
 export default defineEventHandler(async (e) => {
   const { method } = e
   const id = getRouterParam(e, 'id')
   switch (method) {
-    case 'GET':
-      return getAlbum(id)
     case 'POST':
       const body = await readBody(e)
-      return createAlbum(body)
+      const formData = new FormData()
+      for (const key in body) {
+        formData.append(key, body[key])
+      }
+      return uploadImage(formData)
     case 'DELETE':
-      return deleteAlbum(id)
+      return deleteImage(id)
     default:
       return createError(405, 'Method Not Allowed')
   }
