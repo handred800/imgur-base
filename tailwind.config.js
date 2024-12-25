@@ -3,6 +3,6 @@ export default {
   content: ['./src/**/*.{vue,js,ts}'],
   plugins: [require('daisyui')],
   daisyui: {
-    themes: ['emerald'],
+    themes: ['fantasy'],
   },
 }

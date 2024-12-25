@@ -1,7 +1,7 @@
 <template>
   <img
     :src="props.src"
-    class="w-full h-full duration-200 object-cover"
+    class="w-full h-full duration-200 object-cover bg-slate-300"
     :class="{ 'opacity-30': isLoading, 'blur-md': isLoading }"
     alt=""
   >

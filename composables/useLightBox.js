@@ -21,7 +21,7 @@ export const useLightBox = () => {
         pswpModule: () => import('photoswipe'),
       })
       lightbox.init()
-    })
+    }, { immediate: true })
   })
 
   return { setLightBox, openLightBox }

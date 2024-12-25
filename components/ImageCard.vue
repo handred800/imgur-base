@@ -1,10 +1,7 @@
 <template>
-  <div class="border border-slate-300 rounded-xl shadow hover:shadow-lg overflow-hidden duration-100 relative">
-    <div class="aspect-[5/3] bg-slate-300">
-      <NuxtImg
-        class="w-full h-full object-cover duration-200"
-        :src="props.img"
-      />
+  <div class="relative">
+    <div class="aspect-[5/3] rounded-xl overflow-hidden border border-slate-300 shadow hover:shadow-lg duration-100">
+      <NuxtImg :src="props.img" />
     </div>
     <div class="absolute bottom-0 w-full p-2">
       <div class="join w-full">
@@ -17,12 +14,24 @@
             @click="copy"
           >
         </div>
-        <button
-          class="btn btn-sm join-item"
-          @click="clickView"
-        >
-          <IconEye />
-        </button>
+        <div class="dropdown dropdown-end dropdown-hover">
+          <button
+            class="btn btn-sm join-item"
+          >
+            <IconEllipsis />
+          </button>
+          <ul
+            tabindex="0"
+            class="dropdown-content menu bg-white rounded-xl w-32 z-[1] p-2 shadow-lg"
+          >
+            <li>
+              <slot name="view" />
+            </li>
+            <li>
+              <slot name="delete" />
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -34,15 +43,10 @@ const props = defineProps({
   name: String,
   href: String,
 })
-const emit = defineEmits(['clickView'])
 const $input = ref(null)
 
 function copy() {
   $input.value.select()
   navigator.clipboard.writeText(props.href)
-}
-
-function clickView() {
-  emit('clickView', props.href)
 }
 </script>

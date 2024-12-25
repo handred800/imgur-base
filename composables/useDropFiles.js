@@ -6,17 +6,21 @@ export const useDropFiles = ($el) => {
     onDrop: fileHandler,
   })
 
+  const filesPreview = computed(() => {
+    return Array.from(currentFiles.value).map((file) => URL.createObjectURL(file))
+  })
+
   const { open: openFileDialog, onChange } = useFileDialog({ accept: 'image/*', multiple: true })
   onChange(fileHandler)
 
   function fileHandler(files) {
     currentFiles.value = [...currentFiles.value, ...files]
-    console.log(currentFiles.value)
   }
 
   function deleteFile(index) {
+    if (index === undefined) currentFiles.value = []
     currentFiles.value.splice(index, 1)
   }
 
-  return { currentFiles, isOverDropZone, openFileDialog, deleteFile }
+  return { currentFiles, filesPreview, isOverDropZone, openFileDialog, deleteFile }
 }

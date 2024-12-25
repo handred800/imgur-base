@@ -1,10 +1,7 @@
 <template>
   <div class="border border-slate-300 rounded-xl shadow hover:shadow-lg overflow-hidden duration-100 cursor-pointer">
-    <div class="relative aspect-[5/3] bg-slate-300">
-      <NuxtImg
-        class="w-full h-full object-cover duration-200"
-        :src="`https://i.imgur.com/${props.img}.jpg`"
-      />
+    <div class="relative aspect-[5/3]">
+      <NuxtImg :src="`https://i.imgur.com/${props.img}.jpg`" />
       <div
         v-if="props.badge"
         class="absolute top-5 right-5 badge badge-secondary"

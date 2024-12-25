@@ -25,8 +25,24 @@
           :key="image.id"
           :img="image.link"
           :href="image.link"
-          @click-view="openLightbox(index)"
-        />
+        >
+          <template #view>
+            <button
+              class="btn btn-ghost"
+              @click="openLightbox(index)"
+            >
+              <IconEye /> 預覽
+            </button>
+          </template>
+          <template #delete>
+            <button
+              class="btn btn-error"
+              @click="deleteImage(image.id)"
+            >
+              <IconTrash2 /> 刪除
+            </button>
+          </template>
+        </ImageCard>
       </div>
       <div
         v-else
@@ -53,7 +69,7 @@
           </button>
           <div
             ref="$dropzone"
-            class="flex w-full min-h-[60vh] p-4 my-2 rounded-lg"
+            class="min-h-[50vh] p-4 my-4 rounded-lg"
             :class="isOverDropZone ? 'bg-emerald-300': 'bg-slate-300'"
           >
             <div
@@ -63,13 +79,9 @@
               <div
                 v-for="(link, index) in filesPreview"
                 :key="link"
-                class="relative"
+                class="relative aspect-[5/3] rounded-xl overflow-hidden shadow"
               >
-                <img
-                  class="w-full aspect-[4/3] object-cover rounded-lg"
-                  :src="link"
-                  alt=""
-                >
+                <NuxtImg :src="link" />
                 <button
                   class="btn btn-sm btn-circle btn-error absolute top-3 right-3"
                   @click="deleteFile(index)"
@@ -82,8 +94,18 @@
               拖放檔案至此
             </div>
           </div>
-          <button class="btn btn-primary">
-            <IconUpload /> 上傳
+          <button
+            v-if="currentFiles.length > 0"
+            class="btn btn-primary"
+            :disabled="isUploading"
+            @click="uploadFiles"
+          >
+            <div
+              v-if="isUploading"
+              class="loading loading-spinner"
+            />
+            <IconUpload v-else />
+            上傳
           </button>
         </div>
       </template>
@@ -96,7 +118,8 @@ const currentAlbum = useState('currentAlbum', () => ({ images_count: 12 }))
 const route = useRoute()
 
 // fetch資料
-const { data: albumData, status: albumStatus } = useFetch(`/api/album/${route.params.id}`)
+const { data: albumData, status: albumStatus, refresh: refreshAlbum } = await useFetch(`/api/album/${route.params.id}`)
+currentAlbum.value = unref(albumData)
 
 // lightbox
 const { setLightBox, openLightBox } = useLightBox()
@@ -110,16 +133,46 @@ const currentImages = computed(() => {
 })
 watch(currentImages, () => {
   setLightBox(currentImages.value)
-})
+}, { immediate: true })
+
 function openLightbox(index) {
   openLightBox(index)
 }
 
 // upload
 const uploadDrawer = ref(false)
+const isUploading = ref(false)
 const $dropzone = ref(null)
-const { currentFiles, isOverDropZone, openFileDialog, deleteFile } = useDropFiles($dropzone)
-const filesPreview = computed(() => {
-  return Array.from(currentFiles.value).map((file) => URL.createObjectURL(file))
-})
+const { currentFiles, filesPreview, isOverDropZone, openFileDialog, deleteFile } = useDropFiles($dropzone)
+
+function singleUpload(file) {
+  const formData = new FormData()
+  formData.append('image', file)
+  formData.append('album', currentAlbum.value.id)
+  return $fetch('/api/image', {
+    method: 'POST',
+    body: formData,
+  })
+}
+
+async function uploadFiles() {
+  isUploading.value = true
+  try {
+    await Promise.all(Array.from(currentFiles.value).map(singleUpload))
+    await refreshAlbum()
+    deleteFile()
+    uploadDrawer.value = false
+  }
+  catch (error) {
+    alert(error)
+  }
+  isUploading.value = false
+}
+
+function deleteImage(id) {
+  $fetch(`/api/image/${id}`, {
+    method: 'DELETE',
+  })
+  refreshAlbum()
+}
 </script>
