@@ -124,7 +124,7 @@ currentAlbum.value = unref(albumData)
 // lightbox
 const { setLightBox, openLightBox } = useLightBox()
 const currentImages = computed(() => {
-  if (!currentAlbum.value || !albumData.value || albumStatus.value !== 'success') return []
+  if (!currentAlbum.value || !albumData.value || !albumData.value.images || albumStatus.value !== 'success') return []
   return albumData.value.images.map((image) => ({
     src: image.link,
     w: image.width,
